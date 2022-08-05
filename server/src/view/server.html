@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"
+    integrity="sha512-/xb5+PNOA079FJkngKI2jvID5lyiqdHXaUUcfmzE0X0BdpkgzIWHC59LOG90a2jDcOyRsd1luOr24UCCAG8NNw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+    }
+
+    .camera_container--frame {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .camera_container--image_container {
+      width: 50vw !important;
+      height: 75vh !important;
+      border: 2px solid red;
+      box-shadow: black 0 0 10px 2px;
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Hello from server</h1>
+  <div class="camera_container--frame">
+    <div class="camera_container--image_container">
+      <img id="ESP32CAM-144" src="" width="100%" height="100%" alt="" />
+    </div>
+    <div class="camera_container--image_container">
+      <img id="ESP32CAM-142" src="" width="100%" height="100%" alt="" />
+    </div>
+  </div>
+  <script type="text/javascript" src="config.js"></script>
+  <script>
+    // const img = document.getElementById("ESP32CAM-144");
+    const imageElements = document.getElementsByClassName("camera_container--frame")[0].getElementsByTagName("img")
+    console.log('imageElements', imageElements)
+
+    let urlObject;
+
+    const socket = io();
+    socket.on(CLIENT_EVENTNAME, function (message) {
+      // console.log('jpgstream_clientio message', message)
+      console.log('CLIENT_EVENTNAME message.hostname', message.hostname)
+      var blob = new Blob([message.picture], { type: "image/jpeg" });
+      const arrayBuffer = message.picture
+      if (urlObject) {
+        URL.revokeObjectURL(urlObject)
+      }
+      urlObject = URL.createObjectURL(blob) //new Blob([arrayBuffer]))
+      //img.src = urlObject
+      imageElements[message.hostname].src = urlObject
+    })
+    // socket.on("clientList", (...args) => {
+    //   console.log('clientList args', args)
+    // });
+    // // send a message to the server
+    // socket.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
+
+    // // receive a message from the server
+    // socket.on("hello from server", (...args) => {
+    //   console.log('args', args)
+    // });
+
+
+  </script>
+
+</body>
+
+</html>

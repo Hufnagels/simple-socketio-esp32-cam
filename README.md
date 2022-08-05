@@ -10,7 +10,7 @@ This project based on
 
 ## Main goal
 
-Create simple Survillance system with multiple ESP32-CAM modules. Some other great projects, like [![CI Status](https://travis-ci.com/easytarget/esp32-cam-webserver.svg?branch=master)](https://travis-ci.com/github/easytarget/esp32-cam-webserver) are very usefull, but I neede some extra functionality like:
+Create simple Survillance system with multiple ESP32-CAM modules. Some other great projects, like [Easytarget Camera Webserver](https://travis-ci.com/github/easytarget/esp32-cam-webserver) are very usefull, but I neede some extra functionality like:
 - more camera
 - React on client side
 - etc

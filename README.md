@@ -22,7 +22,7 @@ Arduino sketch with the following features:
 - IP last segment as hostname extension --> used on server and client side
 
 extended function
-```
+```sh
 bool sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, bool headerToPayload = false);
 ```
 

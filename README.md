@@ -35,4 +35,4 @@ Node.js server with socket.io
 
 ## TODO
 - Client rewrite into React. 
-- Server side send to connected clients the camera id-s (ESP32CAM-<IP>)
+- Server side send to connected clients the camera id-s (ESP32CAM- < IP >)

@@ -29,6 +29,7 @@ const char *server_host = SERVER_HOST;
 const uint16_t server_port = SERVER_PORT;
 const char *eventname = SERVER_EVENTNAME;
 
+const char *locationname = "Livingroom";
 char IP_end[4];
 char camHostname[50];
 
@@ -110,6 +111,16 @@ void setup()
 {
     Serial.begin(115200);
 
+    /* TODO:
+     * Set Locationname from config file
+     */
+    // locationname
+    
+    /* TODO:
+     * Set hostname from config file
+     */
+    // WiFi.hostname(hostname.c_str());
+
     // Connect to Wi-Fi
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED)
@@ -172,6 +183,7 @@ void loop()
         // add payload (parameters) for the event
         JsonObject param1 = array.createNestedObject();
         param1["hostname"] = camHostname;
+        param1["location"] = locationname;
         param1["picture"] = String((char *)fb->buf);
 
         // JSON to String (serializion)
@@ -182,7 +194,7 @@ void loop()
         //  Send event
         // socketIO.sendEVENT(output);
 
-        socketIO.sendBIN(fb->buf, fb->len, eventname, camHostname); //, (char) camIP[3]);
+        socketIO.sendBIN(fb->buf, fb->len, eventname, camHostname, locationname); //, (char) camIP[3]);
 
         Serial.println("Image sent");
         esp_camera_fb_return(fb);

@@ -2,7 +2,7 @@
 #include "SocketIOclientMod.hpp"
 
 // send text frame followed by binary frame
-bool SocketIOclientMod::sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, bool headerToPayload) //char *hostname,
+bool SocketIOclientMod::sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, char const* locationName, bool headerToPayload) //char *hostname,
 {
 
   // text frame content including hostname and placeholder:

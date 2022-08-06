@@ -5,5 +5,5 @@
 class SocketIOclientMod : public SocketIOclient
 {
 public:
-  bool sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, bool headerToPayload = false); //char *hostname, 
+  bool sendBIN(uint8_t *payload, size_t length, char const *eventName, char const *hostName, char const *locationName, bool headerToPayload = false); // char *hostname,
 };

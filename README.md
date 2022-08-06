@@ -35,8 +35,12 @@ Node.js server with socket.io
 
 ## TODO
 - Client rewrite into React. 
-- Server side send to connected clients the camera id-s (ESP32CAM- < IP >)
+- Server side 
+  - send to connected clients the camera id-s (ESP32CAM- < IP >)
+  - Authentication
 - Sketch:
-- - config page in AP mode 
+  - config page in AP mode 
     - save config to sd)
     - add name (like: Livingroom)
+  - MQTT optional send connected cam name and ip address
+  - Authentication

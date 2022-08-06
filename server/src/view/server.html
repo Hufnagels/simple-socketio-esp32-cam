@@ -52,7 +52,7 @@
     const socket = io();
     socket.on(CLIENT_EVENTNAME, function (message) {
       // console.log('jpgstream_clientio message', message)
-      console.log('CLIENT_EVENTNAME message.hostname', message.hostname)
+      console.log('CLIENT_EVENTNAME message.hostname', message.hostname, message.location)
       var blob = new Blob([message.picture], { type: "image/jpeg" });
       const arrayBuffer = message.picture
       if (urlObject) {

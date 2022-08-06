@@ -34,4 +34,5 @@ Simple node.js responded html file
 Node.js server with socket.io
 
 ## TODO
-Client rewrite into React. 
+- Client rewrite into React. 
+- Server side send to connected clients the camera id-s (ESP32CAM-<IP>)

@@ -35,9 +35,11 @@
   <h1>Hello from server</h1>
   <div class="camera_container--frame">
     <div class="camera_container--image_container">
+      <h3></h3>
       <img id="ESP32CAM-144" src="" width="100%" height="100%" alt="" />
     </div>
     <div class="camera_container--image_container">
+      <h3></h3>
       <img id="ESP32CAM-142" src="" width="100%" height="100%" alt="" />
     </div>
   </div>
@@ -52,7 +54,7 @@
     const socket = io();
     socket.on(CLIENT_EVENTNAME, function (message) {
       // console.log('jpgstream_clientio message', message)
-      console.log('CLIENT_EVENTNAME message.hostname', message.hostname, message.location)
+      console.log('CLIENT_EVENTNAME message.hostname', message.hostname)
       var blob = new Blob([message.picture], { type: "image/jpeg" });
       const arrayBuffer = message.picture
       if (urlObject) {
@@ -61,6 +63,8 @@
       urlObject = URL.createObjectURL(blob) //new Blob([arrayBuffer]))
       //img.src = urlObject
       imageElements[message.hostname].src = urlObject
+      imageElements[message.hostname].previousSibling.innerHTML = "Alma" //message.location
+      
     })
     // socket.on("clientList", (...args) => {
     //   console.log('clientList args', args)

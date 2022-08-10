@@ -14,7 +14,7 @@ io.on('connection', (socket) => {
     //console.log(eventName, args);
   }
   socket.onAny(listener);
-  //console.log(`Connected client id ${socket.id}`)
+  console.log(`Connected client id ${socket.id}`)
   socket.on(SERVER_EVENTNAME, function (msg) {
     console.log("image received", msg.hostname)
     io.emit(CLIENT_EVENTNAME, msg)

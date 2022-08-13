@@ -9,12 +9,19 @@ require('dotenv').config()
 const { WS_PORT, SERVER_EVENTNAME, CLIENT_EVENTNAME } = process.env
 const port = WS_PORT;
 
+const listener = (eventName, ...args) => {
+  console.log(eventName, args);
+}
+
 io.on('connection', (socket) => {
-  const listener = (eventName, ...args) => {
-    //console.log(eventName, args);
-  }
-  socket.onAny(listener);
+
   console.log(`Connected client id ${socket.id}`)
+
+  socket.on('reconnect', () =>{
+    
+  })
+  socket.onAny(listener);
+  
   socket.on(SERVER_EVENTNAME, function (msg) {
     console.log("image received", msg.hostname)
     io.emit(CLIENT_EVENTNAME, msg)

@@ -10,22 +10,35 @@ const { WS_PORT, SERVER_EVENTNAME, CLIENT_EVENTNAME } = process.env
 const port = WS_PORT;
 
 const listener = (eventName, ...args) => {
-  console.log(eventName, args);
+  console.log(`Eventname: ${eventName}`);
+  //console.log(`Args: ${args}`);
 }
+// socketIO.sendEVENT(output)
+// [IOc] Connected to url: /socket.io/?EIO=4
+// ["jpgstream_serverio",{"hostname":"ESP32CAM-142","location":"Livingroom","picture":"⸮⸮⸮⸮"}]
 
 io.on('connection', (socket) => {
 
-  console.log(`Connected client id ${socket.id}`)
+  //console.log(`Connected client id ${socket.id}`)
+  console.info('[' + socket.id + '] new connection', socket.request.connection.remoteAddress);
+  //console.info(socket.request.headers);
+  //console.info(socket.request.connection.eventname);
 
-  socket.on('reconnect', () =>{
-    
-  })
+
   socket.onAny(listener);
-  
-  socket.on(SERVER_EVENTNAME, function (msg) {
-    console.log("image received", msg.hostname)
-    io.emit(CLIENT_EVENTNAME, msg)
+
+  socket.on(SERVER_EVENTNAME, function (message) {
+    //console.log("image received", message)
+    io.emit(CLIENT_EVENTNAME, { message, ip: socket.request.connection.remoteAddress })
   });
+
+  socket.on('reconnect', () => {
+    //console.log(`ReConnected client id ${socket.id}`)
+  })
+
+  socket.on('disconnect', (reason) => {
+    console.log(`DisConnected client id ${socket.id} and reeason is: ${reason}`)
+  })
 })
 
 app.get('/', (req, res) => {

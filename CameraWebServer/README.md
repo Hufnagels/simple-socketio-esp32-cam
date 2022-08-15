@@ -1,4 +1,4 @@
-# ESP32-CAM, socket.io, node.js
+# ESP32-CAM, socket.io, node.js -- CameraWebServer
 
 ## 2022.08.
 
@@ -25,6 +25,8 @@ extended function
 ```sh
 bool sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, bool headerToPayload = false);
 ```
+
+>NOTE: Esp32 always disconnect and connect again. Reason: `transport close`
 
 ### Client
 Simple node.js responded html file

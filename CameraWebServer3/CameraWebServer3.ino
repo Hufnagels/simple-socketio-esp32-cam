@@ -173,7 +173,7 @@ void setup()
     delay(1000);
   }
 
-  WiFiMulti.addAP("SSID", "passpasspass");
+  //WiFiMulti.addAP("SSID", "passpasspass");
   WiFiMulti.addAP(ssid, password);
   
 

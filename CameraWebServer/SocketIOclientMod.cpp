@@ -2,20 +2,22 @@
 #include "SocketIOclientMod.hpp"
 
 // send text frame followed by binary frame
-bool SocketIOclientMod::sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, char const* locationName, bool headerToPayload) //char *hostname,
+bool SocketIOclientMod::sendBIN(uint8_t *payload, size_t length, char const *eventName, char const *hostName, char const *locationName, bool headerToPayload) // char *hostname,
 {
 
   // text frame content including hostname and placeholder:
   // 451["pic",{"hostname":"ESP32_cam","image":{"placeholder":true,"num":0}}]
-  //451-["jpgstream",{"hostname":"ESP32CAM-","picture":{"_placeholder":true,"num":0}}]
+  // 451-["jpgstream",{"hostname":"ESP32CAM-","picture":{"_placeholder":true,"num":0}}]
   char binaryLeadFrame[128];
-  
+
   strcpy(binaryLeadFrame, "451-[\"");
   strcat(binaryLeadFrame, eventName);
   strcat(binaryLeadFrame, "\",{\"hostname\":\"");
-  
-  //strcpy(binaryLeadFrame, "451-[\"jpgstream\",{\"hostname\":\"");
+
+  // strcpy(binaryLeadFrame, "451-[\"jpgstream\",{\"hostname\":\"");
   strcat(binaryLeadFrame, hostName);
+  strcat(binaryLeadFrame, "\",\"location\":\"");
+  strcat(binaryLeadFrame, locationName);
   strcat(binaryLeadFrame, "\",\"picture\":{\"_placeholder\":true,\"num\":0}}]");
 
   bool ret = false;

@@ -29,7 +29,7 @@ const char *server_host = SERVER_HOST;
 const uint16_t server_port = SERVER_PORT;
 const char *eventname = SERVER_EVENTNAME;
 
-const char *locationname = "Livingroom";
+const char *locationname = "Livingroom2";
 char IP_end[4];
 char camHostname[50];
 

@@ -1,11 +1,9 @@
-# ESP32-CAM, socket.io, node.js
+# ESP32-CAM, socket.io, node.js -- CameraWebServer3
 
 ## 2022.08.
 
 This project based on 
-- [ESP32-CAM fastest way to stream video output to nodejs server with socketIO](https://stackoverflow.com/questions/66549640/esp32-cam-fastest-way-to-stream-video-output-to-nodejs-server-with-socketio/72560866#72560866)
-- [Inglebard/esp32cam-relay](https://github.com/Inglebard/esp32cam-relay/tree/main/socketIO/esp32camsocketio)
-- [timum-viw/socket.io-client](https://github.com/timum-viw/socket.io-client)
+- [Links2004-arduinoWebSockets -- WebSocketClientSocketIOack](https://github.com/Links2004/arduinoWebSockets/blob/master/examples/esp32/WebSocketClientSocketIOack/WebSocketClientSocketIOack.ino)
 
 
 ## Main goal
@@ -21,9 +19,9 @@ Arduino sketch with the following features:
 - custom hostname
 - IP last segment as hostname extension --> used on server and client side
 
-extended function
+Not connecting to node server via 
 ```sh
-bool sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, bool headerToPayload = false);
+socketIO.sendEVENT(output)
 ```
 
 ### Client

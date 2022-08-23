@@ -265,14 +265,19 @@ void loop()
 
     // JSON to String (serializion)
     String output;
+    String output2;
     serializeJson(doc, output);
+    output2 = "451-" + output;
+//    Serial.println("output");
+//    Serial.println(output2);
+//    451-["jpgstream_serverio1",{"hostname":"ESP32CAM-142","location":"Livingroom","picture":"⸮⸮⸮⸮"}]
 
     // Send event
-    socketIO.sendEVENT(output);
+    socketIO.sendEVENT(output2);
 
     esp_camera_fb_return(fb);
 
     // Print JSON for debugging
-    USE_SERIAL.println(output);
+    USE_SERIAL.println(output2);
   }
 }

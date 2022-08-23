@@ -1,35 +1,70 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
 const url = require('url');
 
 require('dotenv').config()
-const { WS_PORT, SERVER_EVENTNAME, CLIENT_EVENTNAME } = process.env
+const { WS_PORT, SERVER_EVENTNAME, CLIENT_EVENTNAME, SERVER_CAMERALIST, CLIENT_CONNECTED } = process.env
 const port = WS_PORT;
 
-const listener = (eventName, ...args) => {
-  console.log(`Eventname: ${eventName}`);
-  //console.log(`Args: ${args}`);
+// ESP32 sended message
+// {
+//   "hostname": "ESP32CAM-144",
+//   "picture": ArrayBuffer(20629)
+// }
+let cameraList = []
+const cameras = async (eventName, args) => {
+  // console.log(`Eventname: ${eventName} ${SERVER_EVENTNAME}`);
+  if (eventName === SERVER_EVENTNAME) {
+    if (cameraList.indexOf(args.hostname) === -1) {
+      cameraList.push(args.hostname);
+      console.log('cameraList', cameraList)
+      io.emit(SERVER_CAMERALIST, { cameraList })
+    }
+  }
+  // console.log('cameraList2', cameraList)
+  // return cameraList
 }
+// ESP32
 // socketIO.sendEVENT(output)
 // [IOc] Connected to url: /socket.io/?EIO=4
 // ["jpgstream_serverio",{"hostname":"ESP32CAM-142","location":"Livingroom","picture":"⸮⸮⸮⸮"}]
 
+const listener = async (eventName, args) => {
+  // console.log(`Eventname: ${eventName}`);
+  // console.log(`Args: ${args.hostname}`);
+  if (typeof eventName === 'undefined') return
+  await cameras(eventName, args)
+  if (eventName !== CLIENT_CONNECTED) io.emit(args.hostname, { message: args.message })
+  if (eventName === CLIENT_CONNECTED) io.emit(SERVER_CAMERALIST, { cameraList })
+}
+
 io.on('connection', (socket) => {
 
-  //console.log(`Connected client id ${socket.id}`)
-  console.info('[' + socket.id + '] new connection', socket.request.connection.remoteAddress);
-  //console.info(socket.request.headers);
+  // var socketId = socket.id;
+  // var clientIp = socket.request.connection.remoteAddress;
+  // console.info('[' + socketId + '] new connection', clientIp);
+  //console.info(socket.handshake);
   //console.info(socket.request.connection.eventname);
 
 
   socket.onAny(listener);
-
-  socket.on(SERVER_EVENTNAME, function (message) {
+  // socket.onAnyOutgoing((event, ...args) => {
+  //   console.log(`got ${event}`);
+  // });
+  socket.on(SERVER_EVENTNAME, async (message) => {
     //console.log("image received", message)
+
     io.emit(CLIENT_EVENTNAME, { message, ip: socket.request.connection.remoteAddress })
+    //io.emit(message.hostname, { message, ip: socket.request.connection.remoteAddress })
   });
 
   socket.on('reconnect', () => {
@@ -37,7 +72,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', (reason) => {
-    console.log(`DisConnected client id ${socket.id} and reeason is: ${reason}`)
+    //console.log(`DisConnected client id ${socket.id} and reeason is: ${reason}`)
   })
 })
 

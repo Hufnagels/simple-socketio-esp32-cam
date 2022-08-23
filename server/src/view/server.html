@@ -17,16 +17,22 @@
     .camera_container--frame {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       justify-content: center;
+      align-content: flex-start;
       align-items: stretch;
+      row-gap: 10px;
+      column-gap: 10px;
     }
 
     .camera_container--image_container {
-      width: 50vw !important;
+      /* width: 50vw !important; */
       /* height: 100% !important; */
       /* border: 2px solid red; */
-      box-shadow: black 0 0 10px 2px;
-      margin: 10px;
+      flex-grow: 1;
+      /* box-shadow: black 0 0 10px 2px; */
+      justify-content: center;
+      /* margin: auto; */
     }
 
     .camera_container--image_container h3 {
@@ -38,11 +44,70 @@
       width: 100% !important;
       height: auto !important;
     }
+
+    @media only screen and (max-width: 600px) {
+      .camera_container--frame {
+        /* On small screens, we are no longer using row direction but column */
+        flex-direction: column;
+      }
+
+      .camera_container--image_container {
+        width: 100% !important;
+        /* margin: auto; */
+      }
+    }
+
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px) {
+      .camera_container--frame {
+        /* On small screens, we are no longer using row direction but column */
+        flex-direction: column;
+      }
+
+      .camera_container--image_container {
+        width: 100% !important;
+        /* margin: auto; */
+      }
+    }
+
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {
+      .camera_container--frame {
+        /* On small screens, we are no longer using row direction but column */
+        flex-direction: column;
+      }
+
+      .camera_container--image_container {
+        width: 100% !important;
+        /* margin: auto; */
+      }
+    }
+
+    /* Large devices (laptops/desktops, 992px and up) */
+    @media only screen and (min-width: 992px) {
+      .camera_container--image_container {
+        width: 40% !important;
+        /* margin: auto; */
+      }
+    }
+
+    /* Extra large devices (large laptops and desktops, 1200px and up) */
+    @media only screen and (min-width: 1200px) {
+      .camera_container--frame {
+        /* On small screens, we are no longer using row direction but column */
+        flex-direction: row;
+      }
+
+      .camera_container--image_container {
+        width: 40% !important;
+        /* margin: auto; */
+      }
+    }
   </style>
 </head>
 
 <body>
-  <h1>Hello from server</h1>
+  <!-- <h1>Hello from server</h1> -->
   <div class="camera_container--frame">
     <div class="camera_container--image_container">
       <h3></h3>
@@ -62,8 +127,12 @@
     let urlObject;
 
     const socket = io();
-    socket.on(CLIENT_EVENTNAME, function (data) {
-      // console.log('jpgstream_clientio message', data.message)
+    socket.on(SERVER_CAMERALIST, (data) => {
+      console.log('SERVER_CAMERALIST', data)
+    })
+
+    socket.on(CLIENT_EVENTNAME, (data) => {
+      //console.log('jpgstream_clientio message', data.message)
       // console.log('jpgstream_clientio ip', data.ip.split('.')[3])
       // return
       const message = data.message
@@ -76,7 +145,7 @@
       urlObject = URL.createObjectURL(blob) //new Blob([arrayBuffer]))
       //img.src = urlObject
       imageElements[message.hostname].src = urlObject
-      imageElements[message.hostname].previousElementSibling.innerHTML = message.hostname //message.location
+      imageElements[message.hostname].previousElementSibling.innerHTML = typeof message.location === 'undefined' ? message.hostname : message.location
 
     })
     // socket.on("clientList", (...args) => {

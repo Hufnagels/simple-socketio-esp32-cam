@@ -3,6 +3,12 @@
 #include <ArduinoJson.h>
 #include "SocketIOclientMod.hpp"
 
+#define DEBUG_WEBSOCKETS(...)               \
+    {                                       \
+        DEBUG_ESP_PORT.printf(__VA_ARGS__); \
+        DEBUG_ESP_PORT.flush();             \
+    }
+    
 //
 // WARNING!!! PSRAM IC required for UXGA resolution and high JPEG quality
 //            Ensure ESP32 Wrover Module or other board with PSRAM is selected
@@ -188,11 +194,13 @@ void loop()
 
         // JSON to String (serializion)
         String output;
+        String output2;
         serializeJson(doc, output);
-        // Serial.println("output");
-        // Serial.println(output);
+        output2 = "451-" + output;
+//        Serial.println("output2");
+//        Serial.println(output2);
         //  Send event
-        // socketIO.sendEVENT(output);
+        // socketIO.sendEVENT(output2);
 
         socketIO.sendBIN(fb->buf, fb->len, eventname, camHostname, locationname); //, (char) camIP[3]);
 

@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# ESP32-CAM, socket.io, node.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 2022.08.
 
-## Available Scripts
+This project based on 
+- [ESP32-CAM fastest way to stream video output to nodejs server with socketIO](https://stackoverflow.com/questions/66549640/esp32-cam-fastest-way-to-stream-video-output-to-nodejs-server-with-socketio/72560866#72560866)
+- [Inglebard/esp32cam-relay](https://github.com/Inglebard/esp32cam-relay/tree/main/socketIO/esp32camsocketio)
+- [timum-viw/socket.io-client](https://github.com/timum-viw/socket.io-client)
 
-In the project directory, you can run:
 
-### `npm start`
+## Main goal
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Create simple Survillance system with multiple ESP32-CAM modules. Some other great projects, like [Easytarget Camera Webserver](https://travis-ci.com/github/easytarget/esp32-cam-webserver) are very usefull, but I neede some extra functionality like:
+- more camera
+- React on client side
+- etc
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### CameraWebServer
 
-### `npm test`
+Arduino sketch with the following features:
+- custom hostname
+- IP last segment as hostname extension --> used on server and client side
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+extended function
+```sh
+bool sendBIN(uint8_t *payload, size_t length, char const* eventName, char const* hostName, bool headerToPayload = false);
+```
 
-### `npm run build`
+### Client
+is a React app.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Structure
+App.js
+VideoCard.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Functioning
+When client connected to socket server, it emits the following events
+```sh
+REACT_APP_CONNEECTED_CLIENT
+```
+and then the server respond to it via the following event:
+```sh
+SERVER_CAMERALIST
+```
+and with the following data:
+```sh
+cameraList [ 'ESP32CAM-142', 'ESP32CAM-144' ]
+```
+The VideoCard component called with one of the above list item. Then it connects to the
+```sh
+REACT_APP_CLIENT_EVENTNAME
+```
+event and get the responded args.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+the args are:
+```sh
+{
+    "message": {
+        "hostname": "ESP32CAM-144",
+        "picture": {} ArrayBuffer
+    },
+    "ip": "::ffff:192.168.1.144"
+}
+```
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### TODO:
+- Authentication

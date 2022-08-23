@@ -84,7 +84,7 @@ app.get('/config.js', (req, res) => {
 })
 
 server.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
+  // console.log(`App listening at http://localhost:${port}`)
 })
 
 

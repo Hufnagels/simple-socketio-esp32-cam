@@ -27,15 +27,17 @@ bool sendBIN(uint8_t *payload, size_t length, char const* eventName, char const*
 ```
 
 ### Client
-Simple node.js responded html file
+- Simple node.js responded html file
+- React app
 
 ### Server
 Node.js server with socket.io
 
+
 ## TODO
-- Client rewrite into React. 
+- Client rewrite into React. --> done
 - Server side 
-  - send to connected clients the camera id-s (ESP32CAM- < IP >)
+  - send to connected clients the camera id-s (ESP32CAM- < IP >)  --> done
   - Authentication
 - Sketch:
   - config page in AP mode 

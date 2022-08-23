@@ -38,7 +38,7 @@ const App = () => {
   // // const [Videowidth, setVideowidth] = React.useState(0)
   // // const [Videoheight, setVideoeight] = React.useState(70)
   // const ratio = 4 / 3
-  const GridParam = 4
+  const GridParam = 6
   // const GridModifier = 12 / GridParam
 
   // const resizing = dim => {
@@ -113,7 +113,7 @@ const App = () => {
       </Box>
       <Box sx={{ p: 1 }}>
         <Grid sx={{ flexGrow: 1 }} container spacing={1} ref={videContainerRef} >
-          {cameralist.map(camera => <Grid item xs={GridParam} key={camera}>
+          {cameralist.map(camera => <Grid item xs={12} sx={6} md={6} lg={4} key={camera}>
             <VideoCard
               width={width}
               height={height}
